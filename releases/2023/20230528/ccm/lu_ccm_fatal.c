@@ -25,6 +25,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 //-------------------------------------------------------------------------------------------------
+#if 0
 #define MODULE_CCMFATAL
 
 #include <process.h>
@@ -56,3 +57,4 @@ const char *CCMFATAL_hvcinfo(void)
    }
 
 //End of ccmfatal.c.
+#endif

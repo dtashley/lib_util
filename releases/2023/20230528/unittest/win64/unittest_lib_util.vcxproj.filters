@@ -21,5 +21,25 @@
     <ClCompile Include="..\..\ccm\lu_ccm_fio.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="unittest_lu_ccm_fio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ccm\lu_ccm_fatal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="unittest_lu_ccm_fio.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="unittest_lib_util.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ccm\lu_ccm_fatal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ccm\lu_ccm_fio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

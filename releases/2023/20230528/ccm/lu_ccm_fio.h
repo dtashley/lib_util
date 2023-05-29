@@ -47,7 +47,7 @@
    //   printf() function call returns a negative value (an error code), in which
    //   case this function returns immediately with that error code.
    //********************************************************************************
-   DECMOD_FCMIOF int FCMIOF_repchar(char c, size_t n);
+   extern int FCMIOF_repchar(char c, size_t n);
 
 
    //********************************************************************************
@@ -70,7 +70,7 @@
    //   fprintf() function call returns a negative value (an error code), in which
    //   case this function returns immediately with that error code.
    //********************************************************************************
-   DECMOD_FCMIOF int FCMIOF_stream_hline(FILE *s, size_t line_len);
+   extern int FCMIOF_stream_hline(FILE *s, size_t line_len);
 
 
    //********************************************************************************
@@ -89,7 +89,7 @@
    //   printf() function call returns a negative value (an error code), in which
    //   case this function returns immediately with that error code.
    //********************************************************************************
-   DECMOD_FCMIOF int FCMIOF_hline(size_t line_len);
+   extern int FCMIOF_hline(size_t line_len);
 
 
    //********************************************************************************
@@ -118,7 +118,7 @@
    //   printf() function call returns a negative value (an error code), in which
    //   case this function returns immediately with that error code.
    //********************************************************************************
-   DECMOD_FCMIOF int FCMIOF_stream_bannerheading(FILE *f,
+   extern int FCMIOF_stream_bannerheading(FILE *f,
                                                  char *s, 
                                                  size_t line_len,
                                                  size_t n_extra_lines);
@@ -130,17 +130,17 @@
    /*   Prints a banner heading bracketed by astreisks to the standard output. */
    /*   This function is useful for separating different sections of output.   */
    /****************************************************************************/
-   DECMOD_FCMIOF int FCMIOF_bannerheading(char *s, size_t line_len, size_t n_extra_lines);
+   extern int FCMIOF_bannerheading(char *s, size_t line_len, size_t n_extra_lines);
 
 
-   DECMOD_FCMIOF void FCMIOF_time_stream(FILE *s, time_t ltime);
+   extern void FCMIOF_time_stream(FILE *s, time_t ltime);
 
 
    /* Two functions below return version control information for .C and
    ** .H files.
    */
-   DECMOD_FCMIOF const char *FCMIOF_cvcinfo(void);
-   DECMOD_FCMIOF const char *FCMIOF_hvcinfo(void);
+   extern const char *FCMIOF_cvcinfo(void);
+   extern const char *FCMIOF_hvcinfo(void);
    #define FCMIOF_H_VERSION ("$Header: svn://localhost/dtapublic/projs/emts/trunk/src/lib_c/c_cmode/fcmiof.h 244 2018-08-05 19:05:46Z dashley $")
 
 #endif
