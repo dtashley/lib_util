@@ -28,15 +28,7 @@
 #ifndef FCMIOF_H_INCLUDED
    #define FCMIOF_H_INCLUDED
 
-   #ifdef MODULE_FCMIOF
-      #define DECMOD_FCMIOF
-   #else
-      #define DECMOD_FCMIOF extern
-   #endif
-
-
-
-   DECMOD_FCMIOF int LU_CCM_stream_repchar(FILE *s, char c, size_t n);
+   extern int LU_CCM_stream_repchar(FILE *s, char c, size_t n);
 
 
    //********************************************************************************

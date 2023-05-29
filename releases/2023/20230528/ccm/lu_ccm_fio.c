@@ -16,14 +16,17 @@
 
 /*!
  * Emits a character to a stream a specified number of times.
+ * 
+ * In the implementation, <i>fprintf()</i> is called repeatedly to output one character at
+ * a time.  This function returns an error code at the first error encountered, so that
+ * in the event of error, fewer than <b>n</b> calls to <i>fprintf()</i> may be made.
  *
- * This is the typical JavaDoc-style C-style comment. It starts with two
- * asterisks.
- *
- * @param  s  The stream to which to output the characters.  NULL and otherwise
- *            invalid pointers are not allowed.
- * @param  n  The number of times to emit the character.  0 is a permitted value
- *            and results in no output.
+ * \param[in]  s  The stream to which to output the characters.  NULL and otherwise
+ *                invalid pointers are not allowed and will cause undefined behavior.
+ * \param[in]  n  The number of times to emit the character.  0 is a permitted value
+ *                and results in no output.
+ * \returns       A non-negative value (>=0) on success, or a negative value on error.
+ *                No provision is made for the caller to determine the nature of the error.
  */
  int LU_CCM_stream_repchar(FILE *s, char c, size_t n)
 {
