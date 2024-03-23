@@ -33,32 +33,12 @@
 #ifndef LG_CPP_DD_MALLOC_H_INCLUDED
    #define LG_CPP_DD_MALLOC_H_INCLUDED
 
-   #include <iostream>
+   #include <malloc.h>
 
    extern void* LgCppCm_MallocMalloc(size_t in_size);
    extern void* LgCppCm_MallocCalloc(size_t in_num, size_t in_size);
    extern void* LgCppCm_MallocRealloc(void* in_memblock, size_t in_size);
    extern void  LgCppCm_MallocFree(void* in_memblock);
-#if 0
-#ifndef CMALLOC_H_INCLUDED
-   #define CMALLOC_H_INCLUDED
-
-   #ifdef MODULE_CMALLOC
-      #define DECMOD_CMALLOC
-   #else
-      #define DECMOD_CMALLOC extern
-   #endif
-
-   #define CMALLOC_H_VERSION ("$Header: svn://localhost/dtapublic/projs/emts/trunk/src/lib_c/c_datd/memory/cmalloc.h 244 2018-08-05 19:05:46Z dashley $")
-
-   DECMOD_CMALLOC void *CMALLOC_malloc( size_t size );
-   DECMOD_CMALLOC void *CMALLOC_calloc( size_t num, size_t size );
-   DECMOD_CMALLOC void *CMALLOC_realloc( void *memblock, size_t size );
-   DECMOD_CMALLOC void CMALLOC_free( void *memblock );
-   DECMOD_CMALLOC const char *CMALLOC_cvcinfo(void);
-   DECMOD_CMALLOC const char *CMALLOC_hvcinfo(void);
-#endif
-#endif
 #endif
 
-//End of cmalloc.h.
+//End of lg_cpp_dd_malloc.h.

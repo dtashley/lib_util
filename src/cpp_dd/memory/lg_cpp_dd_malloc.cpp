@@ -38,6 +38,7 @@
 
 #include "lg_cpp_dd_malloc.hpp"
 
+
 /*!
  * Allocates a block of memory of <i>in_size</i> bytes, and returns a pointer to the allocated
  * block.
@@ -49,8 +50,8 @@
  *                               most stringent alignment requirements of the platform.
  *                               <i>nullptr</i> will be returned if <i>in_size</i> is 0.
  * \reentrancyandthreadsafety    This function is re-entrant and thread safe.
- * \errorsandexceptions          The function will throw an exception of <i>malloc()</i>
- *                               is unable to allocate the memory.
+ * \errorsandexceptions          The function will throw a <i>std::bad_alloc</i> exception
+ *                               if <i>malloc()</i> is unable to allocate the memory.
  */
 void *LgCppCm_MallocMalloc(size_t in_size)
 {
@@ -75,7 +76,7 @@ void *LgCppCm_MallocMalloc(size_t in_size)
       }
    }
 
-   return(rv);
+   return rv;
 }
 
 
@@ -85,7 +86,7 @@ void *LgCppCm_MallocMalloc(size_t in_size)
  *
  * \param[in]  in_num            The number of elements for which memory should be allocated.
  *                               See notes about the value of 0 in the description of the
- *                               <i>in_size</i> parameter below.
+ *                               <i>in_size</i> parameter, below.
  * \param[in]  in_size           The size, in bytes, of each element.  If either <i>in_num</i>
  *                               or <i>in_size</i> are 0, then a block of size 0 is being
  *                               requested.  This function will return <i>nullptr</i> in this
@@ -96,8 +97,8 @@ void *LgCppCm_MallocMalloc(size_t in_size)
  *                               <i>nullptr</i> will be returned if <i>in_num</i> or
  *                               <i>in_size</i> is 0.
  * \reentrancyandthreadsafety    This function is re-entrant and thread safe.
- * \errorsandexceptions          The function will throw an exception if <i>calloc()</i>
- *                               is unable to allocate the memory.
+ * \errorsandexceptions          The function will throw a <i>std::bad_alloc</i> exception
+ *                               if <i>calloc()</i> is unable to allocate the memory.
  */
 void* LgCppCm_MallocCalloc(size_t in_num, size_t in_size)
 {
@@ -127,41 +128,40 @@ void* LgCppCm_MallocCalloc(size_t in_num, size_t in_size)
 
 
 /*!
- * Allocates a block of memory of correctly sized to hold <i>in_num</i> elements, each
- * of size <i>in_size</i> bytes, and returns a pointer to the allocated block.
+ * Reallocates a block of memory that was previously allocated with <i>malloc()</i>,
+ * <i>calloc()</i>, or <i>realloc()</i>.
  *
- * \param[in]  in_num            The number of elements for which memory should be allocated.
- *                               See notes about the value of 0 in the description of the
- *                               <i>in_size</i> parameter below.
- * \param[in]  in_size           The size, in bytes, of each element.  If either <i>in_num</i>
- *                               or <i>in_size</i> are 0, then a block of size 0 is being
- *                               requested.  This function will return <i>nullptr</i> in this
- *                               case.
- * \returns                      Pointer to allocated block of memory.  Because this is a
- *                               wrapper for <i>calloc()</i>, the pointer is aligned to the
- *                               most stringent alignment requirements of the platform.
- *                               <i>nullptr</i> will be returned if <i>in_num</i> or
- *                               <i>in_size</i> is 0.
+ * \param[in]  in_memblock       Pointer to the previously allocated block of memory.  Please
+ *                               see the remarks below in the description of <i>in_size</i>
+ *                               about the behavior if this parameter is <i>nullptr</i>.
+ * \param[in]  in_size           The size of the new memory block, in bytes, which may be
+ *                               less than, the same as, or greater than the size of the
+ *                               original memory block.<br><br>
+ *                               If <i>in_memblock</i> is <i>nullptr</i> and <i>in_size</i>
+ *                               is 0, no action is taken and <i>nullptr</i> is returned.<br><br>
+ *                               If  <i>in_memblock</i> is <i>nullptr</i> and <i>in_size</i> is
+ *                               not 0, it is treated as an ordinary allocation request.
+ *                               <i>free()</i> is not called, and the requested memory block
+ *                               is allocated using <i>malloc()</i>.<br><br>
+ *                               If  <i>in_memblock</i> is not <i>nullptr</i> and <i>in_size</i> is
+ *                               0, it is treated as an ordinary deallocation request.  <i>free()</i>
+ *                               is used to deallocate the memory, <i>malloc()</i> is not used,
+ *                               and <i>nullptr</i> is returned.<br><br>
+ *                               If  <i>in_memblock</i> is not <i>nullptr</i> and <i>in_size</i> is
+ *                               not 0, <i>realloc()</i> is used to reallocate the memory block.
+ *                               The pointer returned may be the same or different than the pointer
+ *                               passed, depending on whether the memory could be resized in place.
+ *                               If the block was resized to be smaller, the bytes are identical
+ *                               to those in the original block, up through the new size.
+ *                               If the block was resized to be larger, the bytes are identical
+ *                               to those in the original block, up through the original size,
+ *                               and the additional bytes are uninitialized and may have any value.
+ * \returns                      Pointer to reallocated block of memory, or <i>nullptr</i> as
+ *                               described above.
  * \reentrancyandthreadsafety    This function is re-entrant and thread safe.
- * \errorsandexceptions          The function will throw an exception if <i>calloc()</i>
+ * \errorsandexceptions          The function will throw a <i>std::bad_alloc</i> exception if <i>realloc()</i>
  *                               is unable to allocate the memory.
  */
-#if 0
-The realloc() function changes the size of the memory block pointed to by ptr
-to size bytes.The contents will be unchanged in the range from the start of the
-region up to the minimum of the old and new sizes.If the new size is larger than
-the old size, the added memory will not be initialized.If ptr is NULL, then the
-call is equivalent to malloc(size), for all values of size; if size is equal to
-zero, and ptr is not NULL, then the call is equivalent to free(ptr).Unless ptr is
-NULL, it must have been returned by an earlier call to malloc(), calloc() or
-realloc().If the area pointed to was moved, a free(ptr) is done.
-
-The realloc() function returns a pointer to the newly allocated memory, 
-which is suitably aligned for any kind of variable and may be different from ptr,
-or NULL if the request fails.If size was equal to 0, either NULL or a pointer
-suitable to be passed to free() is returned.If realloc() fails the original
-block is left untouched; it is not freed or moved.
-#endif
 void* LgCppCm_MallocRealloc(void* in_memblock, size_t in_size)
 {
    void* rv = nullptr;
@@ -196,7 +196,7 @@ void* LgCppCm_MallocRealloc(void* in_memblock, size_t in_size)
       else
       {
          //The incoming pointer is not nullptr, and the incoming size is not 0.
-         //Call the realloc function to reallocate, possibly moving.
+         //Call the realloc function to reallocate, possibly moving the block.
          rv = realloc(in_memblock, in_size);
 
          //If the return pointer is nullptr, this can only mean out of memory.
@@ -214,27 +214,14 @@ void* LgCppCm_MallocRealloc(void* in_memblock, size_t in_size)
 
 
 /*!
- * Allocates a block of memory of correctly sized to hold <i>in_num</i> elements, each
- * of size <i>in_size</i> bytes, and returns a pointer to the allocated block.
+ * Deallocates a block of memory allocated by another function in this module.
  *
- * \param[in]  in_num            The number of elements for which memory should be allocated.
- *                               See notes about the value of 0 in the description of the
- *                               <i>in_size</i> parameter below.
- * \param[in]  in_size           The size, in bytes, of each element.  If either <i>in_num</i>
- *                               or <i>in_size</i> are 0, then a block of size 0 is being
- *                               requested.  This function will return <i>nullptr</i> in this
- *                               case.
- * \returns                      Pointer to allocated block of memory.  Because this is a
- *                               wrapper for <i>calloc()</i>, the pointer is aligned to the
- *                               most stringent alignment requirements of the platform.
- *                               <i>nullptr</i> will be returned if <i>in_num</i> or
- *                               <i>in_size</i> is 0.
+ * \param[in]  in_memblock       Pointer to the memory block to be deallocated.  If this parameter
+ *                               is <i>nullptr</i>, no action will be taken.
+ * \returns                      Nothing.
  * \reentrancyandthreadsafety    This function is re-entrant and thread safe.
- * \errorsandexceptions          The function will throw an exception if <i>calloc()</i>
- *                               is unable to allocate the memory.
  */
-
-void LgCppCm_MallocFree( void *in_memblock )
+void LgCppCm_MallocFree(void *in_memblock)
 {
    if (!in_memblock)
    {
