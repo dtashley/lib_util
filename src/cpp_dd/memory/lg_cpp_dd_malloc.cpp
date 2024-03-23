@@ -54,67 +54,78 @@
  */
 void *LgCppCm_MallocMalloc(size_t in_size)
 {
-   void* rv;
+   void* rv = nullptr;
 
    if (!in_size)
    {
+      //Block of size 0 requested.  Nullptr return.
       rv = nullptr;
    }
    else
    {
+      //Attempt to get block.
       rv = malloc(in_size);
 
       if (!rv)
       {
-         //Throw exception.
+         //Nullptr return with a non-zero size request.  With malloc(), this
+         //can only mean out of memory.  Throw exception.  We never make it to
+         //the return statement.
          throw std::bad_alloc{};
       }
    }
 
    return(rv);
 }
+
+
+/*!
+ * Allocates a block of memory of correctly sized to hold <i>in_num</i> elements, each
+ * of size <i>in_size</i> bytes, and returns a pointer to the allocated block.
+ *
+ * \param[in]  in_num            The number of elements for which memory should be allocated.
+ *                               See notes about the value of 0 in the description of the
+ *                               <i>in_size</i> parameter below.
+ * \param[in]  in_size           The size, in bytes, of each element.  If either <i>in_num</i>
+ *                               or <i>in_size</i> are 0, then a block of size 0 is being
+ *                               requested.  This function will return <i>nullptr</i> in this
+ *                               case.
+ * \returns                      Pointer to allocated block of memory.  Because this is a
+ *                               wrapper for <i>calloc()</i>, the pointer is aligned to the
+ *                               most stringent alignment requirements of the platform.
+ *                               <i>nullptr</i> will be returned if <i>in_num</i> or
+ *                               <i>in_size</i> is 0.
+ * \reentrancyandthreadsafety    This function is re-entrant and thread safe.
+ * \errorsandexceptions          The function will throw an exception if <i>calloc()</i>
+ *                               is unable to allocate the memory.
+ */
+void* LgCppCm_MallocCalloc(size_t in_num, size_t in_size)
+{
+   void* rv = nullptr;
+
+   if ((!in_num) || (!in_size))
+   {
+      //A request for a block of 0 bytes is being made.  Return nullptr.
+      rv = nullptr;
+   }
+   else
+   {
+      //Request a block.
+      rv = calloc(in_num, in_size);
+
+      if (!rv)
+      {
+         //Nullptr return with a non-zero block request.  With calloc(), this
+         //can only mean out of memory.  Throw exception.  We never make it to
+         //the return statement.
+         throw std::bad_alloc{};
+      }
+   }
+
+   return rv;
+}
+
 #if 0
-
-#include <process.h>
-#include <stdio.h>
-
-#include "cmalloc.h"
-
-#include "../../c_cmode/ccmfatal.h"
-
-
-void *CMALLOC_malloc( size_t size )
-   {
-   void *rv;
-
-   rv = malloc(size);
-
-   if (!rv)
-      {
-      CCMFATAL_fatal("NULL pointer from malloc()--probable out of memory.",
-                     __FILE__,
-                     __LINE__);
-      }
-
-   return(rv);
-   }
-
-
-void *CMALLOC_calloc( size_t num, size_t size )
-   {
-   void *rv;
-
-   rv = calloc(num, size);
-
-   if (!rv)
-      {
-      CCMFATAL_fatal("NULL pointer from calloc()--probable out of memory.",
-                     __FILE__,
-                     __LINE__);
-      }
-
-   return(rv);
-   }
 
 void *CMALLOC_realloc( void *memblock, size_t size )
    {

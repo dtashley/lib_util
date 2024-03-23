@@ -36,6 +36,7 @@
    #include <iostream>
 
    extern void *LgCppCm_MallocMalloc(size_t in_size);
+   extern void* LgCppCm_MallocCalloc(size_t in_num, size_t in_size);
 
 #if 0
 #ifndef CMALLOC_H_INCLUDED
