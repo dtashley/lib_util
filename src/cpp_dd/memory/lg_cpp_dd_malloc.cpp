@@ -32,24 +32,45 @@
 //--------------------------------------------------------------------------------------------------
 #define MODULE_LG_CPP_DD_MALLOC
 
+#include <exception>
+
 #include <malloc.h>
 
 #include "lg_cpp_dd_malloc.hpp"
 
+/*!
+ * Allocates a block of memory of <i>in_size</i> bytes, and returns a pointer to the allocated
+ * block.
+ *
+ * \param[in]  in_size           The number of bytes to allocate.  If this parameter is 0,
+ *                               the function will allocate no memory and return <i>nullptr</i>.
+ * \returns                      Pointer to allocated block of memory.  Because this is a
+ *                               wrapper for <i>malloc()</i>, the pointer is aligned to the
+ *                               most stringent alignment requirements of the platform.
+ *                               <i>nullptr</i> will be returned if <i>in_size</i> is 0.
+ * \reentrancyandthreadsafety    This function is re-entrant and thread safe.
+ * \errorsandexceptions          The function will throw an exception of <i>malloc()</i>
+ *                               is unable to allocate the memory.
+ */
 void *LgCppCm_MallocMalloc(size_t in_size)
 {
    void* rv;
 
-   rv = malloc(in_size);
-
-#if 0
-   if (!rv)
+   if (!in_size)
    {
-      CCMFATAL_fatal("NULL pointer from malloc()--probable out of memory.",
-         __FILE__,
-         __LINE__);
+      rv = nullptr;
    }
-#endif
+   else
+   {
+      rv = malloc(in_size);
+
+      if (!rv)
+      {
+         //Throw exception.
+         throw std::bad_alloc{};
+      }
+   }
+
    return(rv);
 }
 #if 0
