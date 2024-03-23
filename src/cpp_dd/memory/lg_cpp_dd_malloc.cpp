@@ -125,41 +125,126 @@ void* LgCppCm_MallocCalloc(size_t in_num, size_t in_size)
    return rv;
 }
 
+
+/*!
+ * Allocates a block of memory of correctly sized to hold <i>in_num</i> elements, each
+ * of size <i>in_size</i> bytes, and returns a pointer to the allocated block.
+ *
+ * \param[in]  in_num            The number of elements for which memory should be allocated.
+ *                               See notes about the value of 0 in the description of the
+ *                               <i>in_size</i> parameter below.
+ * \param[in]  in_size           The size, in bytes, of each element.  If either <i>in_num</i>
+ *                               or <i>in_size</i> are 0, then a block of size 0 is being
+ *                               requested.  This function will return <i>nullptr</i> in this
+ *                               case.
+ * \returns                      Pointer to allocated block of memory.  Because this is a
+ *                               wrapper for <i>calloc()</i>, the pointer is aligned to the
+ *                               most stringent alignment requirements of the platform.
+ *                               <i>nullptr</i> will be returned if <i>in_num</i> or
+ *                               <i>in_size</i> is 0.
+ * \reentrancyandthreadsafety    This function is re-entrant and thread safe.
+ * \errorsandexceptions          The function will throw an exception if <i>calloc()</i>
+ *                               is unable to allocate the memory.
+ */
 #if 0
+The realloc() function changes the size of the memory block pointed to by ptr
+to size bytes.The contents will be unchanged in the range from the start of the
+region up to the minimum of the old and new sizes.If the new size is larger than
+the old size, the added memory will not be initialized.If ptr is NULL, then the
+call is equivalent to malloc(size), for all values of size; if size is equal to
+zero, and ptr is not NULL, then the call is equivalent to free(ptr).Unless ptr is
+NULL, it must have been returned by an earlier call to malloc(), calloc() or
+realloc().If the area pointed to was moved, a free(ptr) is done.
 
-void *CMALLOC_realloc( void *memblock, size_t size )
-   {
-   void *rv;
-
-   rv = realloc(memblock, size);
-
-   if ((!rv) && (size))
-      {
-      CCMFATAL_fatal("NULL pointer from realloc()--probable out of memory.",
-                     __FILE__,
-                     __LINE__);
-      }
-
-   return(rv);
-   }
-
-
-void CMALLOC_free( void *memblock )
-   {
-   free(memblock);
-   }
-
-
-const char *CMALLOC_cvcinfo(void)
-   {
-   return("$Header: svn://localhost/dtapublic/projs/emts/trunk/src/lib_c/c_datd/memory/cmalloc.c 244 2018-08-05 19:05:46Z dashley $");
-   }
-
-
-const char *CMALLOC_hvcinfo(void)
-   {
-   return(CMALLOC_H_VERSION);
-   }
-
-//End of cmalloc.c.
+The realloc() function returns a pointer to the newly allocated memory, 
+which is suitably aligned for any kind of variable and may be different from ptr,
+or NULL if the request fails.If size was equal to 0, either NULL or a pointer
+suitable to be passed to free() is returned.If realloc() fails the original
+block is left untouched; it is not freed or moved.
 #endif
+void* LgCppCm_MallocRealloc(void* in_memblock, size_t in_size)
+{
+   void* rv = nullptr;
+
+   if (!in_memblock)
+   {
+      if (!in_size)
+      {
+         //Request to reallocate a nullptr memory block to zero size.
+         //Return nullptr again.
+         rv = nullptr;
+      }
+      else
+      {
+         //in_memblock is nullptr, but in_size > 0.  This is
+         //equivalent to a fresh allocation.
+         //
+         //Make a malloc request.  If out of memory, an exception will
+         //be thrown.
+         rv = LgCppCm_MallocMalloc(in_size);
+      }
+   }
+   else
+   {
+      if (!in_size)
+      {
+         //in_memblock is not nullptr, but in_size is 0.  free the
+         //pointer and return nullptr.
+         free(in_memblock);
+         rv = nullptr;
+      }
+      else
+      {
+         //The incoming pointer is not nullptr, and the incoming size is not 0.
+         //Call the realloc function to reallocate, possibly moving.
+         rv = realloc(in_memblock, in_size);
+
+         //If the return pointer is nullptr, this can only mean out of memory.
+         //Throw an exception.  Per the realloc() specification, the original
+         //memory is still allocated.
+         if (!rv)
+         {
+            throw std::bad_alloc{};
+         }
+      }
+   }
+
+   return rv;
+}
+
+
+/*!
+ * Allocates a block of memory of correctly sized to hold <i>in_num</i> elements, each
+ * of size <i>in_size</i> bytes, and returns a pointer to the allocated block.
+ *
+ * \param[in]  in_num            The number of elements for which memory should be allocated.
+ *                               See notes about the value of 0 in the description of the
+ *                               <i>in_size</i> parameter below.
+ * \param[in]  in_size           The size, in bytes, of each element.  If either <i>in_num</i>
+ *                               or <i>in_size</i> are 0, then a block of size 0 is being
+ *                               requested.  This function will return <i>nullptr</i> in this
+ *                               case.
+ * \returns                      Pointer to allocated block of memory.  Because this is a
+ *                               wrapper for <i>calloc()</i>, the pointer is aligned to the
+ *                               most stringent alignment requirements of the platform.
+ *                               <i>nullptr</i> will be returned if <i>in_num</i> or
+ *                               <i>in_size</i> is 0.
+ * \reentrancyandthreadsafety    This function is re-entrant and thread safe.
+ * \errorsandexceptions          The function will throw an exception if <i>calloc()</i>
+ *                               is unable to allocate the memory.
+ */
+
+void LgCppCm_MallocFree( void *in_memblock )
+{
+   if (!in_memblock)
+   {
+      //Pointer in is nullptr.  Do nothing.
+   }
+   else
+   {
+      //Free the block.
+      free(in_memblock);
+   }
+}
+
+//End of lg_cpp_dd_malloc.cpp.

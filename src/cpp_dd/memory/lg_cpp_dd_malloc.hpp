@@ -35,9 +35,10 @@
 
    #include <iostream>
 
-   extern void *LgCppCm_MallocMalloc(size_t in_size);
+   extern void* LgCppCm_MallocMalloc(size_t in_size);
    extern void* LgCppCm_MallocCalloc(size_t in_num, size_t in_size);
-
+   extern void* LgCppCm_MallocRealloc(void* in_memblock, size_t in_size);
+   extern void  LgCppCm_MallocFree(void* in_memblock);
 #if 0
 #ifndef CMALLOC_H_INCLUDED
    #define CMALLOC_H_INCLUDED
