@@ -32,6 +32,7 @@
 #define MODULE_LG_CPP_DD_CHARF
 
 #include <assert.h>
+#include <string.h>
 
 #include "lg_cpp_dd_charf.hpp"
 
@@ -86,73 +87,74 @@ unsigned LgCppDd_CharfDigitToVal(const char in_digit) noexcept
 }
 
 
-char LgCppDd_CharfNibbleToLcHexDigit(int nibble) noexcept
+char LgCppDd_CharfNibbleToLcHexDigit(const unsigned in_nibble) noexcept
 {
-   switch (nibble & 0x0F)
+   switch (in_nibble & 0x0F)
    {
-   case  0:
-      return('0');
-      break;
-   case  1:
-      return('1');
-      break;
-   case  2:
-      return('2');
-      break;
-   case  3:
-      return('3');
-      break;
-   case  4:
-      return('4');
-      break;
-   case  5:
-      return('5');
-      break;
-   case  6:
-      return('6');
-      break;
-   case  7:
-      return('7');
-      break;
-   case  8:
-      return('8');
-      break;
-   case  9:
-      return('9');
-      break;
-   case 10:
-      return('a');
-      break;
-   case 11:
-      return('b');
-      break;
-   case 12:
-      return('c');
-      break;
-   case 13:
-      return('d');
-      break;
-   case 14:
-      return('e');
-      break;
-   case 15:
-      return('f');
-      break;
-   default:
-      assert(0);
-      return('?');
-      break;
+      case  0:  return '0';
+                break;
+      case  1:  return '1';
+                break;
+      case  2:  return '2';
+                break;
+      case  3:  return '3';
+                break;
+      case  4:  return '4';
+                break;
+      case  5:  return '5';
+                break;
+      case  6:  return '6';
+                break;
+      case  7:  return '7';
+                break;
+      case  8:  return '8';
+                break;
+      case  9:  return '9';
+                break;
+      case 10:  return 'a';
+                break;
+      case 11:  return 'b';
+                break;
+      case 12:  return 'c';
+                break;
+      case 13:  return 'd';
+                break;
+      case 14:  return 'e';
+                break;
+      case 15:  return 'f';
+                break;
+      default:  return '?';
+                break;
       }
    }
 
 
-void LgCppDd_CharfIntToLcHexRev(int arg, char* s) noexcept
+void LgCppDd_CharfIntToLcHexRev(const int in_arg, char* const s, const size_t in_n_chars_avail) noexcept
 {
-   int i;
+   size_t i;
+   int arg;
+   size_t n_iterations;
+   const size_t nibbles_per_int = sizeof(int) * 2;
 
-   assert(s != NULL);
+   //The pointer may not be null.
+   assert(s != nullptr);
 
-   for (i = 0; i < 8; i++)
+   //Copy the input argument.
+   arg = in_arg;
+
+   //Figure out how many iterations.  This is the smaller of:
+   //  a)The number of nibbles in an integer.
+   //  b)The number of characters available in the caller's character array.
+   if (nibbles_per_int < in_n_chars_avail)
+      n_iterations = nibbles_per_int;
+   else
+      n_iterations = in_n_chars_avail;
+
+   //Set the caller's entire area to '0'.  Safer to have all
+   //unused chars set to 0.
+   memset(s, '0', in_n_chars_avail);
+
+   for (i = 0; i < n_iterations; i++)
    {
       s[i] = LgCppDd_CharfNibbleToLcHexDigit(arg);
       arg >>= 4;

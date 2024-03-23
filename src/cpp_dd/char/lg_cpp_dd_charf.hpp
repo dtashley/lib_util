@@ -34,8 +34,10 @@
 
    extern bool LgCppDd_CharfIsDigit(const char in_digit) noexcept;
    extern unsigned LgCppDd_CharfDigitToVal(const char in_digit) noexcept;
-   extern char LgCppDd_CharfNibbleToLcHexDigit(int nibble) noexcept;
-   extern void LgCppDd_CharfIntToLcHexRev(int arg, char* s) noexcept;
+   extern char LgCppDd_CharfNibbleToLcHexDigit(const unsigned in_nibble) noexcept;
+   extern void LgCppDd_CharfIntToLcHexRev(const int in_arg,
+                                          char* const s,
+                                          const size_t in_n_chars_avail) noexcept;
 #endif
 
 //End of lg_cpp_dd_charf.hpp.
