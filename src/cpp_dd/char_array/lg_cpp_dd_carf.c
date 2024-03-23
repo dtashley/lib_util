@@ -24,6 +24,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 //-------------------------------------------------------------------------------------------------
+#if 0
 #define MODULE_BSTRFUNC
 
 #include <assert.h>
@@ -1000,5 +1001,6 @@ const char *BSTRFUNC_hvcinfo(void)
    {
    return(BSTRFUNC_H_VERSION);
    }
+#endif
 
 //End of bstrfunc.c.

@@ -128,7 +128,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\src\cpp_dd\char\lg_cpp_dd_charf.cpp" />
+    <ClCompile Include="..\..\..\..\src\cpp_dd\char_array\lg_cpp_dd_carf.c" />
     <ClCompile Include="..\..\..\..\src\cpp_dd\memory\lg_cpp_dd_malloc.cpp" />
+    <ClCompile Include="..\..\..\..\src\cpp_dd\string_c\lg_cpp_dd_cstrf.c" />
+    <ClCompile Include="..\..\..\..\src\cpp_dd\unicode\lg_cpp_dd_ucodef.c" />
     <ClCompile Include="ut_main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

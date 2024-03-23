@@ -24,6 +24,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 //-------------------------------------------------------------------------------------------------
+#if 0
 #define MODULE_STRFUNCS
 
 #include <string.h>
@@ -182,5 +183,7 @@ const char *StrfuncsHversion(void)
 {   
     return (STRFUNCS_H_VERSION);
 }
+
+#endif
 
 //End of strfuncs.c.
