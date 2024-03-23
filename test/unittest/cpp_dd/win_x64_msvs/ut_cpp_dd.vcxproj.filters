@@ -21,7 +21,7 @@
     <ClCompile Include="..\..\..\..\src\cpp_dd\memory\lg_cpp_dd_malloc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\cpp_dd\char\lg_cpp_dd_charfunc.cpp">
+    <ClCompile Include="..\..\..\..\src\cpp_dd\char\lg_cpp_dd_charf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

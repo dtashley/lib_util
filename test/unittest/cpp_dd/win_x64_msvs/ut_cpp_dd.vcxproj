@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\src\cpp_dd\char\lg_cpp_dd_charfunc.cpp" />
+    <ClCompile Include="..\..\..\..\src\cpp_dd\char\lg_cpp_dd_charf.cpp" />
     <ClCompile Include="..\..\..\..\src\cpp_dd\memory\lg_cpp_dd_malloc.cpp" />
     <ClCompile Include="ut_main.cpp" />
   </ItemGroup>
