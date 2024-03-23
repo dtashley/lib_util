@@ -42,68 +42,68 @@ int main(void)
    for (uint64_t ui = 0; ui <= 1000; ui++)
    {
       std::cout << ui << "\n";
-      LgCppCcm_FioRepcharStream(std::cout, '=', ui);
+      LgCppCm_FioRepcharStream(std::cout, '=', ui);
       std::cout << "\n";
    }
 
    for (uint64_t ui = 0; ui <= 1000; ui++)
    {
       std::cout << ui << "\n";
-      LgCppCcm_FioRepchar('*', ui);
+      LgCppCm_FioRepchar('*', ui);
       std::cout << "\n";
    }
 
-   LgCppCcm_FioHlineStream(std::cout, 30);
-   LgCppCcm_FioHlineStream(std::cout);
+   LgCppCm_FioHlineStream(std::cout, 30);
+   LgCppCm_FioHlineStream(std::cout);
 
-   LgCppCcm_FioHline(30);
-   LgCppCcm_FioHline();
+   LgCppCm_FioHline(30);
+   LgCppCm_FioHline();
 
-   LgCppCcm_FioBannerheadingStream(std::cout,
-                                        "Hello, World!",
-                                        78,
-                                        2);
-   LgCppCcm_FioBannerheadingStream(std::cout,
-                                        "Hello, World, Again!",
-                                        78);
-   LgCppCcm_FioBannerheadingStream(std::cout,
-                                        "Hello, World, x3!");
-   LgCppCcm_FioBannerheadingStream(std::cout,
-                                        "Hello, World, Again x4!",
-                                        100);
-   LgCppCcm_FioBannerheadingStream(std::cout,
-                                        "Hello, World, Again x5!",
-                                        100,
-                                        4);
+   LgCppCm_FioBannerheadingStream(std::cout,
+                                  "Hello, World!",
+                                  78,
+                                  2);
+   LgCppCm_FioBannerheadingStream(std::cout,
+                                  "Hello, World, Again!",
+                                  78);
+   LgCppCm_FioBannerheadingStream(std::cout,
+                                  "Hello, World, x3!");
+   LgCppCm_FioBannerheadingStream(std::cout,
+                                  "Hello, World, Again x4!",
+                                  100);
+   LgCppCm_FioBannerheadingStream(std::cout,
+                                  "Hello, World, Again x5!",
+                                  100,
+                                  4);
 
-   LgCppCcm_FioBannerheading(          "Hello, World!",
-                                        78,
-                                        2);
-   LgCppCcm_FioBannerheading(          "Hello, World, Again!",
-                                        78);
-   LgCppCcm_FioBannerheading(           "Hello, World, x3!");
-   LgCppCcm_FioBannerheading(           "Hello, World, Again x4!",
-                                        100);
-   LgCppCcm_FioBannerheading(           "Hello, World, Again x5!",
-                                        100,
-                                        4);
-   LgCppCcm_FioBannerheading(           "Hello, World, Again x6!",
-                                        100,
-                                        1);
-   LgCppCcm_FioBannerheading(           "Hello, World, Again x7!",
-                                        100,
-                                        0);
-   LgCppCcm_FioBannerheading(           "Hello, World, Again x8!",
-                                        110,
-                                        0);
-   LgCppCcm_FioBannerheading(           "Hello, World, Again x9!",
-                                        120,
-                                        5);
-   LgCppCcm_TimeStream(std::cout, &ltime, true);
+   LgCppCm_FioBannerheading("Hello, World!",
+                            78,
+                            2);
+   LgCppCm_FioBannerheading("Hello, World, Again!",
+                            78);
+   LgCppCm_FioBannerheading("Hello, World, x3!");
+   LgCppCm_FioBannerheading("Hello, World, Again x4!",
+                            100);
+   LgCppCm_FioBannerheading("Hello, World, Again x5!",
+                            100,
+                            4);
+   LgCppCm_FioBannerheading("Hello, World, Again x6!",
+                            100,
+                            1);
+   LgCppCm_FioBannerheading("Hello, World, Again x7!",
+                            100,
+                            0);
+   LgCppCm_FioBannerheading("Hello, World, Again x8!",
+                            110,
+                            0);
+   LgCppCm_FioBannerheading("Hello, World, Again x9!",
+                            120,
+                            5);
+   LgCppCm_TimeStream(std::cout, &ltime, true);
 
    std::cout << "\n";
 
-   LgCppCcm_Time();
+   LgCppCm_Time();
 
    std::cout << "\n";
 

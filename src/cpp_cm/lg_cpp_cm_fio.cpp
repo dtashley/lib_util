@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------
-//C++ formatted I/O functions.
+//C++ formatted console I/O functions.
 //--------------------------------------------------------------------------------------------------
 //This file is part of LibGen, https://github.com/dtashley/LibGen, and is provided
 //under The Unlicense, reproduced below.
@@ -60,7 +60,7 @@
  * \errorsandexceptions          Exceptions are uncaught.  An error writing to the stream will result
  *                               in an uncaught exception.
  */
-void LgCppCcm_FioRepcharStream(std::ostream &in_output_stream, const char in_c, const size_t in_n)
+void LgCppCm_FioRepcharStream(std::ostream &in_output_stream, const char in_c, const size_t in_n)
 {
    size_t n = in_n;
  
@@ -85,7 +85,7 @@ void LgCppCcm_FioRepcharStream(std::ostream &in_output_stream, const char in_c, 
  * \errorsandexceptions          Exceptions are uncaught.  An error writing to the <i>std::cout</i> will result
  *                               in an uncaught exception.
  */
-void LgCppCcm_FioRepchar(const char in_c, size_t in_n)
+void LgCppCm_FioRepchar(const char in_c, size_t in_n)
 {
    size_t n = in_n;
 
@@ -112,9 +112,9 @@ void LgCppCcm_FioRepchar(const char in_c, size_t in_n)
  * \errorsandexceptions          Exceptions are uncaught.  An error writing to the stream will result
  *                               in an uncaught exception.
  */
-void LgCppCcm_FioHlineStream(std::ostream& in_output_stream, const size_t in_line_len)
+void LgCppCm_FioHlineStream(std::ostream& in_output_stream, const size_t in_line_len)
 {
-   LgCppCcm_FioRepcharStream(in_output_stream,
+   LgCppCm_FioRepcharStream(in_output_stream,
                              LG_CPP_CM_FIO_HORIZONTAL_BAR_SEP_CHAR,
                              in_line_len);
    in_output_stream << "\n";
@@ -134,9 +134,9 @@ void LgCppCcm_FioHlineStream(std::ostream& in_output_stream, const size_t in_lin
  * \errorsandexceptions          Exceptions are uncaught.  An error writing to the stream will result
  *                               in an uncaught exception.
  */
-void LgCppCcm_FioHline(const size_t in_line_len)
+void LgCppCm_FioHline(const size_t in_line_len)
 {
-   LgCppCcm_FioHlineStream(std::cout, in_line_len);
+   LgCppCm_FioHlineStream(std::cout, in_line_len);
 }
 
 
@@ -163,10 +163,10 @@ void LgCppCcm_FioHline(const size_t in_line_len)
  * \errorsandexceptions          Exceptions are uncaught.  An error writing to the stream will result
  *                               in an uncaught exception.
  */
-void LgCppCcm_FioBannerheadingStream(std::ostream& in_output_stream,
-                                     const char *  const in_s,
-                                     const size_t  in_line_len,
-                                     const size_t  in_n_extra_lines)
+void LgCppCm_FioBannerheadingStream(std::ostream& in_output_stream,
+                                    const char *  const in_s,
+                                    const size_t  in_line_len,
+                                    const size_t  in_n_extra_lines)
 {
    const size_t length_limit = 2047;
       //The maximum length that can be processed, to prevent arithmetic errors.
@@ -243,15 +243,15 @@ void LgCppCcm_FioBannerheadingStream(std::ostream& in_output_stream,
    // standard output.
    for (i = 0; i < in_n_extra_lines; i++)
    {
-      LgCppCcm_FioRepcharStream(in_output_stream, '*', line_len);
+      LgCppCm_FioRepcharStream(in_output_stream, '*', line_len);
       in_output_stream << "\n";
    }
 
    //Left asterisks of banner.
-   LgCppCcm_FioRepcharStream(in_output_stream, '*', n_left_asterisks);
+   LgCppCm_FioRepcharStream(in_output_stream, '*', n_left_asterisks);
 
    //Left spaces of banner.
-   LgCppCcm_FioRepcharStream(in_output_stream, ' ', lr_padding);
+   LgCppCm_FioRepcharStream(in_output_stream, ' ', lr_padding);
 
    //The banner text itself.
    for (i = 0; i < input_arg_len; i++)
@@ -260,10 +260,10 @@ void LgCppCcm_FioBannerheadingStream(std::ostream& in_output_stream,
    }
 
    //Right spaces of banner.
-   LgCppCcm_FioRepcharStream(in_output_stream, ' ', lr_padding);
+   LgCppCm_FioRepcharStream(in_output_stream, ' ', lr_padding);
 
    //Right asterisks of banner.
-   LgCppCcm_FioRepcharStream(in_output_stream, '*', n_right_asterisks);
+   LgCppCm_FioRepcharStream(in_output_stream, '*', n_right_asterisks);
 
    //Terminating newline.
    in_output_stream << "\n";
@@ -273,7 +273,7 @@ void LgCppCcm_FioBannerheadingStream(std::ostream& in_output_stream,
    */
    for (i = 0; i < in_n_extra_lines; i++)
    {
-      LgCppCcm_FioRepcharStream(in_output_stream, '*', line_len);
+      LgCppCm_FioRepcharStream(in_output_stream, '*', line_len);
       in_output_stream << "\n";
    }
 }
@@ -299,11 +299,11 @@ void LgCppCcm_FioBannerheadingStream(std::ostream& in_output_stream,
  * \errorsandexceptions          Exceptions are uncaught.  An error writing to the stream will result
  *                               in an uncaught exception.
  */
-void LgCppCcm_FioBannerheading(const char* const in_s, const size_t in_line_len, const size_t in_n_extra_lines)
+void LgCppCm_FioBannerheading(const char* const in_s, const size_t in_line_len, const size_t in_n_extra_lines)
 {
    assert(in_s != nullptr);
 
-   LgCppCcm_FioBannerheadingStream(std::cout, in_s, in_line_len, in_n_extra_lines);
+   LgCppCm_FioBannerheadingStream(std::cout, in_s, in_line_len, in_n_extra_lines);
 }
 
 
@@ -333,7 +333,7 @@ void LgCppCcm_FioBannerheading(const char* const in_s, const size_t in_line_len,
  * \errorsandexceptions               Exceptions are uncaught.  An error writing to the stream will result
  *                                    in an uncaught exception.
  */
-void LgCppCcm_TimeStream(std::ostream& in_output_stream, time_t* const in_ltime, const bool in_acquire_time)
+void LgCppCm_TimeStream(std::ostream& in_output_stream, time_t* const in_ltime, const bool in_acquire_time)
 {
    char* p;
    time_t local_ltime;
@@ -423,9 +423,9 @@ void LgCppCcm_TimeStream(std::ostream& in_output_stream, time_t* const in_ltime,
  * \errorsandexceptions               Exceptions are uncaught.  An error writing to the stream will result
  *                                    in an uncaught exception.
  */
-void LgCppCcm_Time(time_t* const in_ltime, const bool in_acquire_time)
+void LgCppCm_Time(time_t* const in_ltime, const bool in_acquire_time)
 {
-   LgCppCcm_TimeStream(std::cout, in_ltime, in_acquire_time);
+   LgCppCm_TimeStream(std::cout, in_ltime, in_acquire_time);
 }
 
 //End of lg_cpp_cm_fio_cpp.c.

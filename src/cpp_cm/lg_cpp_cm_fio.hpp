@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------
-//Header file for C++ formatted I/O functions.
+//Header file for C++ formatted console I/O functions.
 //--------------------------------------------------------------------------------------------------
 //This file is part of LibGen, https://github.com/dtashley/LibGen, and is provided
 //under The Unlicense, reproduced below.
@@ -29,24 +29,24 @@
 //
 //For more information, please refer to <https://unlicense.org>
 //--------------------------------------------------------------------------------------------------
-#ifndef LG_CPP_CM_FIO_CPP_H_INCLUDED
-   #define LG_CPP_CM_FIO_CPP_H_INCLUDED
+#ifndef LG_CPP_CM_FIO_HPP_INCLUDED
+   #define LG_CPP_CM_FIO_HPP_INCLUDED
 
    #include <iostream>
 
    #include "time.h"
 
-   extern void LgCppCcm_FioRepcharStream(std::ostream& in_output_stream, const char in_c, const size_t in_n);
-   extern void LgCppCcm_FioRepchar(const char in_c, size_t in_n);
-   extern void LgCppCcm_FioHlineStream(std::ostream& in_output_stream, const size_t in_line_len = 78);
-   extern void LgCppCcm_FioHline(const size_t in_line_len = 78);
-   extern void LgCppCcm_FioBannerheadingStream(std::ostream& in_output_stream,
-                                               const char* const in_s,
-                                               const size_t in_line_len = 78,
-                                               const size_t in_n_extra_lines = 1);
-   extern void LgCppCcm_FioBannerheading(const char* const in_s, const size_t in_line_len = 78, const size_t in_n_extra_lines = 1);
-   extern void LgCppCcm_TimeStream(std::ostream& in_output_stream, time_t * const in_ltime = nullptr, const bool in_acquire_time = false);
-   extern void LgCppCcm_Time(time_t* const in_ltime = nullptr, const bool in_acquire_time = false);
+   extern void LgCppCm_FioRepcharStream(std::ostream& in_output_stream, const char in_c, const size_t in_n);
+   extern void LgCppCm_FioRepchar(const char in_c, size_t in_n);
+   extern void LgCppCm_FioHlineStream(std::ostream& in_output_stream, const size_t in_line_len = 78);
+   extern void LgCppCm_FioHline(const size_t in_line_len = 78);
+   extern void LgCppCm_FioBannerheadingStream(std::ostream& in_output_stream,
+                                              const char* const in_s,
+                                              const size_t in_line_len = 78,
+                                              const size_t in_n_extra_lines = 1);
+   extern void LgCppCm_FioBannerheading(const char* const in_s, const size_t in_line_len = 78, const size_t in_n_extra_lines = 1);
+   extern void LgCppCm_TimeStream(std::ostream& in_output_stream, time_t * const in_ltime = nullptr, const bool in_acquire_time = false);
+   extern void LgCppCm_Time(time_t* const in_ltime = nullptr, const bool in_acquire_time = false);
 #endif
 
-//End of lg_cpp_cm_fio_cpp.h.
+//End of lg_cpp_cm_fio.hpp.

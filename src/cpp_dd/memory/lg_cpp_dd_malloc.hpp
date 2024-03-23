@@ -1,6 +1,6 @@
 //--------------------------------------------------------------------------------------------------
-//Header file for C++ data-driven functions which provide a wrapper, with the functionality
-//of throwing exceptions, around the malloc() family of functions.
+//Header file for C++ data-driven functions, wrapper around malloc() family of functions, with
+//the ability to throw an exception if out of memory.
 //--------------------------------------------------------------------------------------------------
 //This file is part of LibGen, https://github.com/dtashley/LibGen, and is provided
 //under The Unlicense, reproduced below.
@@ -31,17 +31,13 @@
 //For more information, please refer to <https://unlicense.org>
 //--------------------------------------------------------------------------------------------------
 #ifndef LG_CPP_DD_MALLOC_H_INCLUDED
-#define LG_CPP_DD_MALLOC_H_INCLUDED
+   #define LG_CPP_DD_MALLOC_H_INCLUDED
 
-#include <iostream>
-/*
-This module defines a wrapper around the standard "C" memory allocation
-function for simple console-mode applications.  If there are any memory
-allocation errors encountered (such as out of memory), the behavior will
-simply be to write an error message and to terminate.  This is adequate
-for data-driven console mode applications.
-*/
+   #include <iostream>
 
+   extern void *LgCppCm_MallocMalloc(size_t in_size);
+
+#if 0
 #ifndef CMALLOC_H_INCLUDED
    #define CMALLOC_H_INCLUDED
 
@@ -59,6 +55,8 @@ for data-driven console mode applications.
    DECMOD_CMALLOC void CMALLOC_free( void *memblock );
    DECMOD_CMALLOC const char *CMALLOC_cvcinfo(void);
    DECMOD_CMALLOC const char *CMALLOC_hvcinfo(void);
+#endif
+#endif
 #endif
 
 //End of cmalloc.h.
