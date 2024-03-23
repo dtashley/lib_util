@@ -24,7 +24,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 //-------------------------------------------------------------------------------------------------
-#include "lg_cpp_dd_charfunc.hpp"
+#include "lg_cpp_dd_charf.hpp"
 
 #if 0
 #define MODULE_CHARFUNC
