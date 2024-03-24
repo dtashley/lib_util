@@ -35,6 +35,7 @@
    #include "lg_cpp_dd_charf.hpp"
 
    extern bool LgCppDd_CarfIsUintWoCommas(const char* const in_arg) noexcept;
+   extern bool LgCppDd_CarfIsSintWoCommas(const char* const in_arg) noexcept;
 #endif
 
 //End of lg_cpp_dd_carf.hpp.

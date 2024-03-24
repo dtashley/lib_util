@@ -38,7 +38,7 @@
 
 /*!
  * Examines a C string to determine if it is consistent with being an unsigned
- * integer.
+ * integer of any length.
  *
  * \param[in]  in_arg            Pointer to a 0-terminated C string.  Pointing to an empty
  *                               string is permissible, but the <i>in_arg</i> pointer may
@@ -109,32 +109,72 @@ bool LgCppDd_CarfIsUintWoCommas(const char * const in_arg) noexcept
 }
 
 
-#if 0
-//07/28/01:  Visual inspection only.
-int BSTRFUNC_is_sint_wo_commas(const char *arg)
+/*!
+ * Examines a C string to determine if it is consistent with being an signed
+ * integer of any length.
+ *
+ * \param[in]  in_arg            Pointer to a 0-terminated C string.  Pointing to an empty
+ *                               string is permissible, but the <i>in_arg</i> pointer may
+ *                               not be nullptr or otherwise invalid.
+ * \returns                      true if the string is consistent with being signed integer
+ *                               of any size, or false otherwise.  Such a string would be "0";
+ *                               or a sequence of digits not beginning with '0', and with no
+ *                               non-digit characters; or a '-' followed by a sequence of digits
+ *                               not beginning with '0', and with no non-digit characters.
+ * \reentrancyandthreadsafety    This function is re-entrant and thread safe.
+ * \errorsandexceptions          This function cannot generate exceptions that should be caught.
+ *                               If the caller passes a nullptr pointer, the behavior of a
+ *                               compiled program is unknown (will this be an exception that
+ *                               might have been caught in the C++ exception-handling framework?).
+ */
+bool LgCppDd_CarfIsSintWoCommas(const char* const in_arg) noexcept
+{
+   const char* arg;
+      //Modifiable pointer.
+   bool rv = true;
+      //Return value.  Default is true.  Only false cases need to be
+      //detected.
+
+   //Input pointer may not be nullptr.
+   assert(in_arg != nullptr);
+
+   //Copy to pointer which may be modified.
+   arg = in_arg;
+
+   if (!*arg)  //Empty string?
    {
-   //This function will use its unsigned counterpart.
-   //
-   //Eyeball the input parameter.
-   assert(arg != NULL);
-
-   if (!*arg)  //Empty string ain't an integer.
-      return(0);
-
-   if (*arg == '-')
-      {
-      if (arg[1] == '0')
-         return(0);
-      else
-        return(BSTRFUNC_is_uint_wo_commas(arg+1));
-      }
+      //Empty string is not a signed integer.
+      rv = false;
+   }
    else
+   {
+      if (*arg == '-')  //Leading '-'?
       {
-      return(BSTRFUNC_is_uint_wo_commas(arg));
+         if (arg[1] == '0')
+         {
+            rv = false; //String beginning with "-0" can't be proper
+                        //signed integer.
+         }
+         else
+         {
+            //If the leading character is '-', the rest must follow the
+            //rules for an unsigned integer.
+            rv = LgCppDd_CarfIsUintWoCommas(arg + 1);
+         }
+      }
+      else
+      {
+         //If the leading character is not a '-', the string must follow
+         //the rules for an unsigned integer.
+         rv = LgCppDd_CarfIsUintWoCommas(arg);
       }
    }
 
+   return rv;
+}
 
+
+#if 0
 //07/18/01:  Visual inspection and unit tests passed.
 int BSTRFUNC_is_uint_w_commas(const char *arg)
    {
