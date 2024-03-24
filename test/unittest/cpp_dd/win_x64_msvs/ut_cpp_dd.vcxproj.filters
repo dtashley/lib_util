@@ -24,13 +24,13 @@
     <ClCompile Include="..\..\..\..\src\cpp_dd\char\lg_cpp_dd_charf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\cpp_dd\char_array\lg_cpp_dd_carf.c">
+    <ClCompile Include="..\..\..\..\src\cpp_dd\char_array\lg_cpp_dd_carf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\cpp_dd\string_c\lg_cpp_dd_cstrf.c">
+    <ClCompile Include="..\..\..\..\src\cpp_dd\unicode\lg_cpp_dd_ucodef.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\cpp_dd\unicode\lg_cpp_dd_ucodef.c">
+    <ClCompile Include="..\..\..\..\src\cpp_dd\string_c\lg_cpp_dd_cstrf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
