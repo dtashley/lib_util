@@ -32,7 +32,9 @@
 #ifndef LG_CPP_DD_CARF_HPP_INCLUDED
    #define LG_CPP_DD_CARF_HPP_INCLUDED
 
-   extern bool LgCppDd_CarfIsUintWoCommas(const char* in_arg) noexcept;
+   #include "lg_cpp_dd_charf.hpp"
+
+   extern bool LgCppDd_CarfIsUintWoCommas(const char* const in_arg) noexcept;
 #endif
 
 //End of lg_cpp_dd_carf.hpp.

@@ -40,48 +40,72 @@
  * Examines a C string to determine if it is consistent with being an unsigned
  * integer.
  *
- * \param[in]  in_output_stream  The stream to which to output the characters.  The stream
- *                               must be open and able to accept written characters.
- * \param[in]  in_c              The character to output repeatedly.
- * \param[in]  in_n              The number of times to emit the character.  0 is a permitted value
- *                               and results in no output.
- * \returns                      Nothing.
- * \reentrancyandthreadsafety    This function is re-entrant and thread safe, so long as either the stream
- *                               isn't accessed by multiple threads, or interleaving of output to the
- *                               stream is acceptable.
- * \errorsandexceptions          Exceptions are uncaught.  An error writing to the stream will result
- *                               in an uncaught exception.
+ * \param[in]  in_arg            Pointer to a 0-terminated C string.  Pointing to an empty
+ *                               string is permissible, but the <i>in_arg</i> pointer may
+ *                               not be nullptr or otherwise invalid.
+ * \returns                      true if the string is consistent with being an unsigned integer
+ *                               of any size, or false otherwise.  Such a string would be "0",
+ *                               or a sequence of digits not beginning with '0', and with no
+ *                               non-digit characters.
+ * \reentrancyandthreadsafety    This function is re-entrant and thread safe.
+ * \errorsandexceptions          This function cannot generate exceptions that should be caught.
+ *                               If the caller passes a nullptr pointer, the behavior of a
+ *                               compiled program is unknown (will this be an exception that
+ *                               might have been caught in the C++ exception-handling framework?).
  */
-//Finish documentation above.
-bool LgCppDd_CarfIsUintWoCommas(const char *in_arg) noexcept
+bool LgCppDd_CarfIsUintWoCommas(const char * const in_arg) noexcept
 {
-   assert(in_arg != NULL);
+   const char* arg;
+      //Copy of the input argument, modifiable.
+   bool rv = true;
+      //Value to be returned to the caller.  Assigned to true, so
+      //that only the false case needs to be assigned when those
+      //cases are detected.
 
-   if (!*in_arg)
-      return(0);
+   assert(in_arg != nullptr);
+      //Input pointer may not be null.
 
-   if (in_arg[0] == '0')
-      {
-      if (in_arg[1])
-         {
-         return(0);
-         }
-      else
-         {
-         return(1);
-         }
-      }
+   arg = in_arg;
+      //Make modifiable copy of input argument.
+
+   if (!*arg) //Empty string.
+   {
+      //Empty string.  Not an integer.
+      rv = false;
+   }
    else
+   {
+      if (arg[0] == '0')  //Leading '0'?
       {
-      while (*in_arg)
+         if (arg[1])  //String continues?
          {
-         if ((*in_arg < '0') || (*in_arg > '9'))
-            return(0);
-         in_arg++;
+            //Leading '0' either on an integer, or on a string that is not
+            //an integer.  Either way, incorrectly formed.
+            rv = false;
          }
-
-      return(1);
+         else
+         {
+            //'0' only in the string.  0 is a legitimate unsigned integer.
+            //rv = true;
+         }
       }
+      else
+      {
+         while (*arg) //While not at the end of string.
+         {
+            if (!LgCppDd_CharfIsDigit(*arg))
+            {
+               //Not a digit.  Therefore not an unsigned integer.
+               rv = false;  //Return false.
+               break;       //Exit the while() loop, which also exits all
+                            //the if()-else clauses.
+            }
+            arg++;
+         }
+      }
+   }
+
+   return rv;
 }
 
 
