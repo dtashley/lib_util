@@ -31,134 +31,38 @@
 //--------------------------------------------------------------------------------------------------
 #define MODULE_LG_CPP_DD_CHARF
 
+#include <assert.h>
+
 #include "lg_cpp_dd_carf.hpp"
 
 
-//$Header: svn://localhost/dtapublic/projs/emts/trunk/src/lib_c/c_datd/string_c/bstrfunc.c 242 2018-08-04 18:25:51Z dashley $
-//-------------------------------------------------------------------------------------------------
-//This file is part of "David T. Ashley's Shared Source Code", a set of shared components
-//integrated into many of David T. Ashley's projects.
-//-------------------------------------------------------------------------------------------------
-//This source code and any program in which it is compiled/used is provided under the MIT License,
-//reproduced below.
-//-------------------------------------------------------------------------------------------------
-//Permission is hereby granted, free of charge, to any person obtaining a copy of
-//this software and associated documentation files(the "Software"), to deal in the
-//Software without restriction, including without limitation the rights to use,
-//copy, modify, merge, publish, distribute, sublicense, and / or sell copies of the
-//Software, and to permit persons to whom the Software is furnished to do so,
-//subject to the following conditions :
-//
-//The above copyright notice and this permission notice shall be included in all
-//copies or substantial portions of the Software.
-//
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-//SOFTWARE.
-//-------------------------------------------------------------------------------------------------
-#if 0
-#define MODULE_BSTRFUNC
+/*!
+ * Examines a C string to determine if it is consistent with being an unsigned
+ * integer.
+ *
+ * \param[in]  in_output_stream  The stream to which to output the characters.  The stream
+ *                               must be open and able to accept written characters.
+ * \param[in]  in_c              The character to output repeatedly.
+ * \param[in]  in_n              The number of times to emit the character.  0 is a permitted value
+ *                               and results in no output.
+ * \returns                      Nothing.
+ * \reentrancyandthreadsafety    This function is re-entrant and thread safe, so long as either the stream
+ *                               isn't accessed by multiple threads, or interleaving of output to the
+ *                               stream is acceptable.
+ * \errorsandexceptions          Exceptions are uncaught.  An error writing to the stream will result
+ *                               in an uncaught exception.
+ */
+//Finish documentation above.
+bool LgCppDd_CarfIsUintWoCommas(const char *in_arg) noexcept
+{
+   assert(in_arg != NULL);
 
-#include <assert.h>
-#include <malloc.h>
-#include <process.h>
-#include <stddef.h>
-#include <string.h>
-
-
-#if defined(APP_TYPE_SIMPLE_DOS_CONSOLE)
-   #include "ccmalloc.h"
-#elif defined(APP_TYPE_IJUSCRIPTER_IJUCONSOLE)
-   #include "tclalloc.h"
-#else
-   /* Do nothing. */
-#endif
-
-#include "bstrfunc.h"
-#include "ccmalloc.h"
-#include "charfunc.h"
-
-
-/******************************************************************/
-/***  CUSTOM ALLOCATION FUNCTIONS   *******************************/
-/******************************************************************/
-//We need wrappers because this software module will be used in
-//more than one kind of software.  This could also be done with
-//macros, but I like function wrappers better because there
-//is less ambiguity and more ability to collect information if
-//something goes wrong.
-//
-//07/24/01:  Visual inspection only.  Function deemed too 
-//simple for unit testing.
-void *BSTRFUNC_malloc( size_t size )
-   {
-   #if defined(APP_TYPE_SIMPLE_DOS_CONSOLE)
-      return(CCMALLOC_malloc(size));
-   #elif defined(APP_TYPE_IJUSCRIPTER_IJUCONSOLE)
-      return(TclpAlloc(size));
-   #else
-      return(malloc(size));
-   #endif 
-   }
-
-
-//07/24/01:  Visual inspection only.  Function deemed too 
-//simple for unit testing.
-void *BSTRFUNC_calloc( size_t num, size_t size )
-   {
-   #if defined(APP_TYPE_SIMPLE_DOS_CONSOLE)
-      return(CCMALLOC_calloc(num, size));
-   #elif defined(APP_TYPE_IJUSCRIPTER_IJUCONSOLE)
-      return(TclpCalloc(num, size));
-   #else
-      return(calloc(num, size));
-   #endif 
-   }
-
-
-//07/24/01:  Visual inspection only.  Function deemed too 
-//simple for unit testing.
-void *BSTRFUNC_realloc( void *memblock, size_t size )
-   {
-   #if defined(APP_TYPE_SIMPLE_DOS_CONSOLE)
-      return(CCMALLOC_realloc(memblock, size));
-   #elif defined(APP_TYPE_IJUSCRIPTER_IJUCONSOLE)
-      return(TclpRealloc(memblock, size));
-   #else
-      return(realloc(memblock, size));
-   #endif 
-   }
-
-
-//07/24/01:  Visual inspection only.  Function deemed too 
-//simple for unit testing.
-void BSTRFUNC_free( void *memblock )
-   {
-   #if defined(APP_TYPE_SIMPLE_DOS_CONSOLE)
-      CCMALLOC_free(memblock);
-   #elif defined(APP_TYPE_IJUSCRIPTER_IJUCONSOLE)
-      TclpFree(memblock);
-   #else
-      free(memblock);
-   #endif 
-   }
-
-
-//07/18/01:  Visual inspection and unit tests passed.
-int BSTRFUNC_is_uint_wo_commas(const char *arg)
-   {
-   assert(arg != NULL);
-
-   if (!*arg)
+   if (!*in_arg)
       return(0);
 
-   if (arg[0] == '0')
+   if (in_arg[0] == '0')
       {
-      if (arg[1])
+      if (in_arg[1])
          {
          return(0);
          }
@@ -169,18 +73,19 @@ int BSTRFUNC_is_uint_wo_commas(const char *arg)
       }
    else
       {
-      while (*arg)
+      while (*in_arg)
          {
-         if ((*arg < '0') || (*arg > '9'))
+         if ((*in_arg < '0') || (*in_arg > '9'))
             return(0);
-         arg++;
+         in_arg++;
          }
 
       return(1);
       }
-   }
+}
 
 
+#if 0
 //07/28/01:  Visual inspection only.
 int BSTRFUNC_is_sint_wo_commas(const char *arg)
    {
