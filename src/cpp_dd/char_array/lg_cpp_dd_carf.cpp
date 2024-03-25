@@ -174,178 +174,232 @@ bool LgCppDd_CarfIsSintWoCommas(const char* const in_arg) noexcept
 }
 
 
-#if 0
-//07/18/01:  Visual inspection and unit tests passed.
-int BSTRFUNC_is_uint_w_commas(const char *arg)
-   {
+/*!
+ * Examines a C string to determine if it is consistent with being an unsigned
+ * integer of any length.
+ *
+ * \param[in]  in_arg            Pointer to a 0-terminated C string.  Pointing to an empty
+ *                               string is permissible, but the <i>in_arg</i> pointer may
+ *                               not be nullptr or otherwise invalid.
+ * \returns                      true if the string is consistent with being an unsigned integer
+ *                               of any size, or false otherwise.  Such a string would be "0",
+ *                               or a sequence of digits not beginning with '0', and with no
+ *                               non-digit characters.
+ * \reentrancyandthreadsafety    This function is re-entrant and thread safe.
+ * \errorsandexceptions          This function cannot generate exceptions that should be caught.
+ *                               If the caller passes a nullptr pointer, the behavior of a
+ *                               compiled program is unknown (will this be an exception that
+ *                               might have been caught in the C++ exception-handling framework?).
+ */
+bool LgCppDd_CarfIsUintWCommas(const char* const in_arg) noexcept
+{
+   //TODO:  Substantial change in porting.  Need to review and document logic.
+   //
+   const char* arg;
+      //Modifiable copy of input pointer.
+   bool rv = true;
+      //Return value.  Default to true.  Only negative cases need to make assignment.
    int state;
+   bool exit_flag;
 
    //Input pointer cannot be NULL.
-   assert(arg != NULL);
+   assert(in_arg != NULL);
+
+   //Copy to modifiable pointer.
+   arg = in_arg;
 
    //Can't be empty string.
    if (!*arg)
-      return(0);
-
-   //If the first digit is 0, that must be the only digit.
-   if (arg[0] == '0')
+   {
+      //Empty string.  Not an unsigned integer with commas.
+      rv = false;
+   }
+   else
+   {
+      //If the first digit is 0, that must be the only digit.
+      if (arg[0] == '0')
       {
-      if (arg[1])
+         if (arg[1])
          {
-         return(0);
+            //'0' not the only digit.  Not an unsigned integer with commas.
+            rv = false;
          }
+         else
+         {
+            //rv = true;
+         }
+      }
       else
-         {
-         return(1);
-         }
-      }
-
-   //The remainder of this function is an efficient state
-   //machine recognizer.  The state machine involved is
-   //pretty simple and was drawn and discarded on a sheet
-   //of paper.  It doesn't need to be filed because it is
-   //so basic.
-   if ((*arg < '0') || (*arg > '9'))
-      return(0);
-
-   state = 0;
-   arg++;
-
-   while(1)
       {
-      switch (state)
+         if (!LgCppDd_CharfIsDigit(*arg))
          {
-         case 0 : if (!*arg)
-                     {
-                     return(1);
-                     }
-                  else if (*arg == ',')
-                     {
-                     state = 3;
-                     }
-                  else if ((*arg >= '0') && (*arg <= '9'))
-                     {
-                     state = 1;
-                     }
-                  else
-                     {
-                     return(0);
-                     }
-                  break;
-         case 1 : if (!*arg)
-                     {
-                     return(1);
-                     }
-                  else if (*arg == ',')
-                     {
-                     state = 3;
-                     }
-                  else if ((*arg >= '0') && (*arg <= '9'))
-                     {
-                     state = 2;
-                     }
-                  else
-                     {
-                     return(0);
-                     }
-                  break;
-         case 2 : if (!*arg)
-                     {
-                     return(1);
-                     }
-                  else if (*arg == ',')
-                     {
-                     state = 3;
-                     }
-                  else if ((*arg >= '0') && (*arg <= '9'))
-                     {
-                     return(0);
-                     }
-                  else
-                     {
-                     return(0);
-                     }
-                  break;
-         case 3 : if (!*arg)
-                     {
-                     return(0);
-                     }
-                  else if (*arg == ',')
-                     {
-                     return(0);
-                     }
-                  else if ((*arg >= '0') && (*arg <= '9'))
-                     {
-                     state = 4;
-                     }
-                  else
-                     {
-                     return(0);
-                     }
-                  break;
-         case 4 : if (!*arg)
-                     {
-                     return(0);
-                     }
-                  else if (*arg == ',')
-                     {
-                     return(0);
-                     }
-                  else if ((*arg >= '0') && (*arg <= '9'))
-                     {
-                     state = 5;
-                     }
-                  else
-                     {
-                     return(0);
-                     }
-                  break;
-         case 5 : if (!*arg)
-                     {
-                     return(0);
-                     }
-                  else if (*arg == ',')
-                     {
-                     return(0);
-                     }
-                  else if ((*arg >= '0') && (*arg <= '9'))
-                     {
-                     state = 6;
-                     }
-                  else
-                     {
-                     return(0);
-                     }
-                  break;
-         case 6 : if (!*arg)
-                     {
-                     return(1);
-                     }
-                  else if (*arg == ',')
-                     {
-                     state = 3;
-                     }
-                  else if ((*arg >= '0') && (*arg <= '9'))
-                     {
-                     return(0);
-                     }
-                  else
-                     {
-                     return(0);
-                     }
-                  break;
-         default:
-                  abort();
-                  break;
+            //First character not a digit.
+            rv = false;
          }
+         else
+         {
+            state = 0;
+            exit_flag = false;
+            arg++;
 
-      arg++;
+            while (!exit_flag)
+            {
+               switch (state)
+               {
+                  case 0: if (!*arg)
+                          {
+                             //rv        = true;
+                             exit_flag = true;
+                          }
+                          else if (*arg == ',')
+                          {
+                             state = 3;
+                          }
+                          else if (LgCppDd_CharfIsDigit(*arg))
+                          {
+                             state = 1;
+                          }
+                          else
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          break;
+                  case 1: if (!*arg)
+                          {
+                             //rv        = true;
+                             exit_flag = true;
+                          }
+                          else if (*arg == ',')
+                          {
+                             state = 3;
+                          }
+                          else if ((*arg >= '0') && (*arg <= '9'))
+                          {
+                             state = 2;
+                          }
+                          else
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          break;
+                  case 2: if (!*arg)
+                          {
+                             //rv        = true;
+                             exit_flag = true;
+                          }
+                          else if (*arg == ',')
+                          {
+                             state = 3;
+                          }
+                          else if (LgCppDd_CharfIsDigit(*arg))
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          else
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          break;
+                  case 3: if (!*arg)
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          else if (*arg == ',')
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          else if (LgCppDd_CharfIsDigit(*arg))
+                          {
+                             state = 4;
+                          }
+                          else
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          break;
+                  case 4: if (!*arg)
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          else if (*arg == ',')
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          else if (LgCppDd_CharfIsDigit(*arg))
+                          {
+                             state = 5;
+                          }
+                          else
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          break;
+                  case 5: if (!*arg)
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          else if (*arg == ',')
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          else if (LgCppDd_CharfIsDigit(*arg))
+                          {
+                             state = 6;
+                          }
+                          else
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          break;
+                  case 6: if (!*arg)
+                          {
+                             //rv        = true;
+                             exit_flag = true;
+                          }
+                          else if (*arg == ',')
+                          {
+                             state = 3;
+                          }
+                          else if (LgCppDd_CharfIsDigit(*arg))
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          else
+                          {
+                             rv        = false;
+                             exit_flag = true;
+                          }
+                          break;
+                  default:
+                          assert(false);
+                          break;
+               }  //End switch().
+
+               arg++;
+            } //End while().
+         }
       }
-     
-   //We should never get here.
    }
 
+   return rv;
+}  //End function.
 
+
+#if 0
 //07/28/01:  Visual inspection only.
 int BSTRFUNC_is_sint_w_commas(const char *arg)
    {
