@@ -32,6 +32,7 @@
 #define MODULE_LG_CPP_DD_CHARF
 
 #include <assert.h>
+#include <string.h>
 
 #include "lg_cpp_dd_carf.hpp"
 
@@ -451,31 +452,48 @@ bool LgCppDd_CarfIsSintWCommas(const char* const in_arg) noexcept
 }
 
 
-#if 0
-//07/18/01:  Visual verification only due to simplicity.
-void BSTRFUNC_str_reverse(char *s)
-   {
-   int l, begin, end;
+/*!
+ * Reverses a C string in place (the first character becomes the last, the last the first, etc.).
+ *
+ * \param[in]  in_arg            Pointer to a 0-terminated C string.  Pointing to an empty
+ *                               string is permissible, but the <i>in_arg</i> pointer may
+ *                               not be nullptr or otherwise invalid.
+ * \returns                      true if the string is consistent with being an unsigned integer
+ *                               of any length with commas properly inserted, or false otherwise.
+ * \reentrancyandthreadsafety    This function is re-entrant and thread safe.
+ * \errorsandexceptions          This function cannot generate exceptions that should be caught.
+ *                               If the caller passes a nullptr pointer, the behavior of a
+ *                               compiled program is unknown (will this be an exception that
+ *                               might have been caught in the C++ exception-handling framework?).
+ */
+void LgCppDd_CarfCstrReverse(char * const in_s) noexcept
+{
+   size_t l, begin, end;
+   char* s;
    char temp;
 
-   assert(s != NULL);
-
+   assert(in_s != NULL);
+   s = in_s;
    l = strlen(s);
 
-   begin = 0;
-   end = l-1;
+   if (l > 1) //Can't meaningfully reverse 0-length or single-character string.
+   {
+      begin = 0;
+      end = l - 1;
 
-   while ((end-begin) >=1)
+      while (begin < end)
       {
-      temp = s[begin];
-      s[begin] = s[end];
-      s[end] = temp;
-      begin++;
-      end--;
+         temp = s[begin];
+         s[begin] = s[end];
+         s[end] = temp;
+         begin++;
+         end--;
       }
    }
+}
 
 
+#if 0
 void BSTRFUNC_parse_gen_sci_not_num(const char *s,
                                     int *failure,
                                     char *mant_sign,
@@ -932,29 +950,45 @@ void BSTRFUNC_parse_gen_sci_not_num(const char *s,
    if (exp_len)
       *exp_len = i_exp_len;
    }
+#endif
 
 
-//07/18/01:  Has passed visual verification plus unit tests.
-void BSTRFUNC_commanate(char *s)
-   {
-   int l;
-   int ncommas;
+/*!
+ * Adds commas to a numeric string representing an unsigned or signed integer.  The space must exist
+ * in the area pointed to.
+ *
+ * \param[in]  in_arg            Pointer to a 0-terminated C string.  Pointing to an empty
+ *                               string is permissible, but the <i>in_arg</i> pointer may
+ *                               not be nullptr or otherwise invalid.
+ * \returns                      true if the string is consistent with being an unsigned integer
+ *                               of any length with commas properly inserted, or false otherwise.
+ * \reentrancyandthreadsafety    This function is re-entrant and thread safe.
+ * \errorsandexceptions          This function cannot generate exceptions that should be caught.
+ *                               If the caller passes a nullptr pointer, the behavior of a
+ *                               compiled program is unknown (will this be an exception that
+ *                               might have been caught in the C++ exception-handling framework?).
+ */
+void LgCppDd_CarfCstrCommanate(char* const in_s) noexcept
+{
+   size_t l;
+   size_t ncommas;
    char *putpt, *getpt;
-   int ndigits;
+   char* s;
+   size_t ndigits;
 
-   //Adds commas to a numeric string.  The space
-   //must exist in the area passed.
-   assert(s);
+   assert(in_s);
+   s = in_s;
 
    //If the leading character on the string is a 
    //'-', bump the pointer.  Then everything
-   //else applies as for an unsigned.
+   //else applies as for an unsigned.  Empty string does not pass this test
+   //and so pointer not incremented.
    if (*s == '-')
      s++;
 
    //Be sure the string currently meets the syntax for
    //a signed integer.  If not, don't even touch it.
-   if (!BSTRFUNC_is_uint_wo_commas(s))
+   if (!LgCppDd_CarfIsUintWoCommas(s))
       return;
 
    //Get the length of the current string.
@@ -995,9 +1029,10 @@ void BSTRFUNC_commanate(char *s)
          }
       assert((putpt >= s) && (getpt>=s));
       }
-   }
+}
 
 
+#if 0
 //07/28/01:  Visual inspection only.
 void BSTRFUNC_decommanate(char *s)
    {
@@ -1026,8 +1061,10 @@ void BSTRFUNC_decommanate(char *s)
          }
       }
    }
+#endif
 
 
+#if 0
 void BSTRFUNC_parse_str_to_uint32(const char *s, 
                                   unsigned int *rv, 
                                   int *error)

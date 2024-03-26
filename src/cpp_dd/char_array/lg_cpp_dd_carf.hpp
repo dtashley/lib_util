@@ -38,6 +38,9 @@
    extern bool LgCppDd_CarfIsSintWoCommas(const char* const in_arg) noexcept;
    extern bool LgCppDd_CarfIsUintWCommas(const char* const in_arg) noexcept;
    extern bool LgCppDd_CarfIsSintWCommas(const char* const in_arg) noexcept;
+   extern void LgCppDd_CarfCstrReverse(char* const in_s) noexcept;
+   extern void LgCppDd_CarfCstrCommanate(char* const in_s) noexcept;
+
 #endif
 
 //End of lg_cpp_dd_carf.hpp.
